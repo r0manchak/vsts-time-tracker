@@ -6,7 +6,9 @@ import { AzurePr } from "./azure/pr";
  * All Pull Requests.
  */
 export let getPrs = (req: Request, res: Response) => {
-  const pr = new AzurePr(10, req.query.profileId);
+  const prCount = req.query.count || 10;
+
+  const pr = new AzurePr(prCount, req.query.profileId);
   pr.getTaskTimesPerDay()
     .then(taskTimes => {
       // res.contentType('text/json');
@@ -15,7 +17,8 @@ export let getPrs = (req: Request, res: Response) => {
         days: taskTimes.days,
         tasks: taskTimes.tasks,
         profiles: taskTimes.profiles,
-        selectedProfile: taskTimes.profileId
+        selectedProfile: taskTimes.profileId,
+        prCount: prCount
       });
     })
     .catch(err => {
