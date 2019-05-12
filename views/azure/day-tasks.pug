@@ -1,0 +1,27 @@
+extends ../layout
+
+block content
+    .page-header
+        h3 Time sheet
+    .row
+        .col-sm-12
+            form(method='GET')
+                select(name='profileId')
+                    each profile in profiles
+                        option(value=profile.id, selected=profile.id === selectedProfile)=profile.displayName
+                button(type=submit) Show time
+    .row
+        .col-sm-12
+            table.table.table-bordered
+                thead
+                    tr
+                        th Task
+                        each day in Object.keys(days)
+                            th=day.split('/')[1]
+                    each task in tasks
+                        tr
+                            td=(`${task.id} - ${task.title}`)
+                            each day in days
+                                td=(day.some(p => p.items.some(item => item.id === task.id)) ? task.history : '')
+
+
