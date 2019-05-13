@@ -23,7 +23,7 @@ export class AzurePr {
     const prs = await gitApi.getPullRequestsByProject(
       process.env.AZURE_PROJECT,
       <GitPullRequestSearchCriteria>{
-        status: PullRequestStatus.Completed | PullRequestStatus.Active
+        status: PullRequestStatus.All
       },
       undefined, undefined, 15
     );
@@ -50,7 +50,7 @@ export class AzurePr {
       process.env.AZURE_PROJECT,
       <GitPullRequestSearchCriteria>{
         creatorId: this.profileId,
-        status: PullRequestStatus.Completed | PullRequestStatus.Active
+        status: PullRequestStatus.All
       },
       undefined,
       undefined,
@@ -127,6 +127,7 @@ export class AzurePr {
   public async getTaskTimesPerDay() {
     const items = await this.getWorkItems();
 
+    // groupBy days
     const days = items.reverse().reduce((res, item) => {
       const day = item.pr.creationDate.toLocaleDateString();
       if (!res[day]) {

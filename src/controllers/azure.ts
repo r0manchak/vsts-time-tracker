@@ -11,7 +11,6 @@ export let getPrs = (req: Request, res: Response) => {
   const pr = new AzurePr(prCount, req.query.profileId);
   pr.getTaskTimesPerDay()
     .then(taskTimes => {
-      // res.contentType('text/json');
       res.render("azure/day-tasks", {
         title: "Time Sheet",
         days: taskTimes.days,
@@ -22,6 +21,7 @@ export let getPrs = (req: Request, res: Response) => {
       });
     })
     .catch(err => {
+      res.contentType('text/json');
       res.render("azure/json", {
         title: "Err PRs",
         data: err
